@@ -50,16 +50,9 @@ public class AmazonApiService {
 
             String priceString = productPriceNode.asText();
 
-            Pattern pattern = Pattern.compile("\\d{1,3}(,\\d{3})*(\\.\\d+)?");
-            Matcher matcher = pattern.matcher(priceString);
+            String cleanedPriceString = priceString.replaceAll("[^\\d.]", "");
 
-            if (matcher.find()) {
-                String numericPriceString = matcher.group().replace(",", "");
-                return Double.parseDouble(numericPriceString);
-            } else {
-                System.out.println("Failed to extract price.");
-                return null;
-            }
+            return Double.parseDouble(cleanedPriceString);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

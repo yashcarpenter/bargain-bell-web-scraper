@@ -32,8 +32,14 @@ public class Controller {
     }
     @RequestMapping(value = "/amazon/{asin}", method = RequestMethod.GET)
     public Double getPriceFromAmazon(@PathVariable String asin){
-        return amazonApiService.getProductPrice(asin);
+        long startTime = System.currentTimeMillis();
+        Double price = amazonApiService.getProductPrice(asin);
+        long endTime = System.currentTimeMillis();
+        long timeTaken = endTime - startTime;
+        System.out.println("Time taken to fetch price: " + timeTaken + " milliseconds");
+        return price;
     }
+
     @RequestMapping(value = "/amazon-scrape", method = RequestMethod.GET)
     public String getPriceFromAmazonScape(@RequestParam String url){
         return amazonPriceScrapping.getAmazonPrice(url);
