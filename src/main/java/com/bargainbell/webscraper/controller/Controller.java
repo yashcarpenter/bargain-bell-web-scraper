@@ -3,7 +3,7 @@ package com.bargainbell.webscraper.controller;
 
 import com.bargainbell.webscraper.service.AmazonApiService;
 import com.bargainbell.webscraper.service.AmazonPriceScrapping;
-import com.bargainbell.webscraper.service.FlipkartApiService;
+//import com.bargainbell.webscraper.service.FlipkartApiService;
 import com.bargainbell.webscraper.service.MyntraScrapingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +14,8 @@ public class Controller {
 
     @Autowired
     private MyntraScrapingService myntraScrapingService;
-    @Autowired
-    private FlipkartApiService flipkartApiService;
+//    @Autowired
+//    private FlipkartApiService flipkartApiService;
     @Autowired
     private AmazonApiService amazonApiService;
     @Autowired
@@ -26,10 +26,11 @@ public class Controller {
         return myntraScrapingService.getMyntraProductPrice(productCode);
     }
 
-    @RequestMapping(value = "/flipkart/{pid}", method = RequestMethod.GET)
-    public Double getPriceFromFlipkart(@PathVariable String pid){
-        return flipkartApiService.getFlipkartProductPrice(pid);
-    }
+//    @RequestMapping(value = "/flipkart", method = RequestMethod.GET)
+//    public Double getPriceFromFlipkart(@RequestParam String url){
+//        return flipkartApiService.getFlipkartProductPrice(url);
+//    }
+
     @RequestMapping(value = "/amazon/{asin}", method = RequestMethod.GET)
     public Double getPriceFromAmazon(@PathVariable String asin){
         long startTime = System.currentTimeMillis();

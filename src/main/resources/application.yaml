@@ -1,22 +1,9 @@
 server:
   port: 9020
-#spring:
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        dialect: org.hibernate.dialect.MySQLDialect
-#        format_sql: false
-#  main:
-#    allow-circular-references: true
-#
-#  h2:
-#    console:
-#      enabled: true
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+    health:
+      show-details: always
