@@ -1,10 +1,7 @@
 package com.bargainbell.webscraper.controller;
 
 
-import com.bargainbell.webscraper.service.AmazonApiService;
-import com.bargainbell.webscraper.service.AmazonScrapingServiceByProxy;
-import com.bargainbell.webscraper.service.FlipkartApiService;
-import com.bargainbell.webscraper.service.MyntraScrapingServiceByProxy;
+import com.bargainbell.webscraper.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +17,8 @@ public class Controller {
     private AmazonApiService amazonApiService;
     @Autowired
     private AmazonScrapingServiceByProxy amazonScrapingServiceByProxy;
+    @Autowired
+    private AmazonScrappingService amazonScrappingService;
 
     @RequestMapping(value = "/myntra/{productCode}", method = RequestMethod.GET)
     public Double getPriceFromMyntra(@PathVariable String productCode){
@@ -41,9 +40,14 @@ public class Controller {
         return price;
     }
 
+    @RequestMapping(value = "/proxy/amazon-scrape", method = RequestMethod.GET)
+    public Double getPriceFromAmazonScapeProxy(@RequestParam String url){
+        return amazonScrapingServiceByProxy.getAmazonProductPrice(url);
+    }
+
     @RequestMapping(value = "/amazon-scrape", method = RequestMethod.GET)
     public Double getPriceFromAmazonScape(@RequestParam String url){
-        return amazonScrapingServiceByProxy.getAmazonProductPrice(url);
+        return amazonScrappingService.getAmazonPriceAndAsin(url);
     }
 
 }

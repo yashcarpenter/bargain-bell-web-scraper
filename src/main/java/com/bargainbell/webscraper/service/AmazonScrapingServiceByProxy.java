@@ -17,6 +17,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Service
 public class AmazonScrapingServiceByProxy {
 
@@ -65,36 +68,47 @@ public class AmazonScrapingServiceByProxy {
     }
 
     public Double getAmazonProductPrice(String url) {
-
         long startTime = System.currentTimeMillis();
         String pageContent = fetchAmazonProductPage(url);
         long endTime = System.currentTimeMillis();
         long timeTaken = endTime - startTime;
-        System.out.println("Time taken to fetch Amazon Product Page thorugh proxy: " + timeTaken + " milliseconds");
+        System.out.println("Time taken to fetch Amazon Product Page through proxy: " + timeTaken + " milliseconds");
 
         if (pageContent == null) {
             System.out.println("Failed to fetch page content for product code: " + url);
             return null;
         }
 
+        Double price = null;
+        String asin = null;
+
         try {
             // Parsing HTML with Jsoup
             Document doc = Jsoup.parse(pageContent);
 
-            // Adjust the regex pattern for the specific Amazon price tag
+            // Price extraction
             Elements priceElements = doc.select("span.a-price-whole");
             if (!priceElements.isEmpty()) {
-                String price = priceElements.get(0).text().replace(",", "");
-                return Double.parseDouble(price);
+                String priceText = priceElements.get(0).text().replace(",", "");
+                price = Double.parseDouble(priceText);
             } else {
                 System.out.println("Price tag not found in the response.");
-                return null;
+            }
+
+            // ASIN extraction using regex
+            Pattern pattern = Pattern.compile("var opts = \\{[^}]*?asin: \"([A-Z0-9]+)\"[^}]*?\\};", Pattern.DOTALL);
+            Matcher matcher = pattern.matcher(pageContent);
+            if (matcher.find()) {
+                asin = matcher.group(1);
+                System.out.println("ASIN found: " + asin);
+            } else {
+                System.out.println("ASIN not found in the response.");
             }
 
         } catch (Exception e) {
-            System.out.println("Failed to fetch the price for Product Code: " + url);
+            System.out.println("Failed to fetch the price or ASIN for Product Code: " + url);
             e.printStackTrace();
         }
-        return null;
+        return price; // Return price, you can modify this to return both if needed
     }
 }
