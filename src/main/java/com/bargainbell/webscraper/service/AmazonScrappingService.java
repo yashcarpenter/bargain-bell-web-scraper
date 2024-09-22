@@ -8,7 +8,7 @@ import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AmazonPriceScrapping {
+public class AmazonScrappingService {
 
     public String getAmazonPrice(String url) {
         try {
