@@ -47,7 +47,7 @@ public class AmazonScrappingService {
         System.out.println("ASIN not found in the response.");
       }
 
-      return price; // Return price, you can modify this to return both if needed
+      return price;
 
     } catch (IOException e) {
       System.out.println("Failed to fetch the webpage: " + e.getMessage());
